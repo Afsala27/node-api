@@ -2,7 +2,7 @@ const { authSchema } = require('../helpers/validation_schema');
 const Users = require('../models/usersModel');
 const asyncHandler = require('express-async-handler');
 const createError = require('http-errors');
-const {signAccessTocken} = require('../helpers/jwt_helper');
+const {signAccessToken, signRefreshToken} = require('../helpers/jwt_helper');
 
 //save users
 const saveUsers = asyncHandler( async (req, res) => {
@@ -15,9 +15,10 @@ const saveUsers = asyncHandler( async (req, res) => {
         }
         //console.log(result);
         const user = await Users.create(req.body)
-        const accessToken = await signAccessTocken(user.id)
+        const accessToken = await signAccessToken(user.id)
+        const refreshToken = await signRefreshToken(user.id)
         //res.status(200).json(user)
-        res.send({accessToken})
+        res.send({accessToken, refreshToken})
 
     } catch (error) {
         //res.status(500);

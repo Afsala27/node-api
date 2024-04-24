@@ -1,9 +1,11 @@
 const express = require('express');
-const {login} = require('../controllers/loginControllers');
+const {login, refreshToken} = require('../controllers/loginControllers');
 
 const router = express.Router();
 
-// adding users
-router.post('/', login)
+// login
+router.post('/login', login)
+
+router.post('/refreshtoken', refreshToken)
 
 module.exports = router;

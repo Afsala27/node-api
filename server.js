@@ -2,12 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const productRoutes = require('./routes/productRoute');
-const errorMiddleware = require('./middleware/errorMiddleware');
+//const errorMiddleware = require('./middleware/errorMiddleware');
 //var cors = require('cors')
 const userRoutes = require('./routes/usersRoute');
 const loginRoute = require('./routes/loginRoute');
 const morgan = require('morgan');
 const { verifyAccesToken } = require('./helpers/jwt_helper');
+const createError = require('http-errors');
 
 const app = express();
 app.use(morgan('dev'))
@@ -15,7 +16,7 @@ app.use(morgan('dev'))
 const mongoUrl = process.env.MONGO_URL;
 const port = process.env.PORT || 3000;
 
-const frontend_url = process.env.FRONTEND_URL
+//const frontend_url = process.env.FRONTEND_URL
 
 
 // //cors defenision
@@ -38,7 +39,7 @@ app.use('/api/products', verifyAccesToken, productRoutes);
 
 app.use('/api/users', userRoutes);
 
-app.use('/api/login', loginRoute);
+app.use('/api/auth', loginRoute);
 
 // app.get('/', (req, res) => {
 //     //throw new Error ('fake error');

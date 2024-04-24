@@ -2,7 +2,7 @@ const { loginSchema } = require('../helpers/validation_schema');
 const Users = require('../models/usersModel');
 const asyncHandler = require('express-async-handler');
 const createError = require('http-errors');
-const {signAccessTocken} = require('../helpers/jwt_helper');
+const {signAccessToken, signRefreshToken, verifyRefreshToken} = require('../helpers/jwt_helper');
 
 
 const login = asyncHandler( async (req, res, next) => {
@@ -19,10 +19,11 @@ const login = asyncHandler( async (req, res, next) => {
             throw createError.Unauthorized('Username/password not valid')
         }
 
-        const accessToken = await signAccessTocken(user.id)
+        const accessToken = await signAccessToken(user.id)
+        const refreshToken = await signRefreshToken(user.id)
         console.log(result)
         //res.send(user)
-        res.status(200).json({accessToken})
+        res.status(200).json({accessToken, refreshToken})
 
     } catch (error) {
         if (error.isJoi === true)
@@ -31,6 +32,23 @@ const login = asyncHandler( async (req, res, next) => {
     }
 })
 
+const refreshToken = asyncHandler( async (req, res, next) => {
+    try {
+        const { refreshToken } = req.body
+        if(!refreshToken) throw createError.BadRequest();
+        const userId = await verifyRefreshToken(refreshToken);
+
+        const accessToken = await signAccessToken(userId)
+        const refToken = await signRefreshToken(userId)
+
+        res.send({accessToken: accessToken, refreshToken: refToken})
+
+    } catch (error) {
+        next(error);
+    }
+})
+
 module.exports = {
-    login
+    login,
+    refreshToken
 }
