@@ -9,6 +9,8 @@ const loginRoute = require('./routes/loginRoute');
 const morgan = require('morgan');
 const { verifyAccesToken } = require('./helpers/jwt_helper');
 const createError = require('http-errors');
+require('./helpers/init_redis')
+
 
 const app = express();
 app.use(morgan('dev'))
