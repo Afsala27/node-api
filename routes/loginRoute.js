@@ -1,5 +1,5 @@
 const express = require('express');
-const {login, refreshToken} = require('../controllers/loginControllers');
+const {login, refreshToken, logout} = require('../controllers/loginControllers');
 
 const router = express.Router();
 
@@ -7,5 +7,7 @@ const router = express.Router();
 router.post('/login', login)
 
 router.post('/refreshtoken', refreshToken)
+
+router.delete('/logout', logout)
 
 module.exports = router;

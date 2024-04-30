@@ -7,7 +7,7 @@ const productRoutes = require('./routes/productRoute');
 const userRoutes = require('./routes/usersRoute');
 const loginRoute = require('./routes/loginRoute');
 const morgan = require('morgan');
-const { verifyAccesToken } = require('./helpers/jwt_helper');
+const { verifyAccessToken } = require('./helpers/jwt_helper');
 const createError = require('http-errors');
 require('./helpers/init_redis')
 
@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended : true}));
 
 // using product routes for controllers
-app.use('/api/products', verifyAccesToken, productRoutes);
+app.use('/api/products', verifyAccessToken, productRoutes);
 
 
 app.use('/api/users', userRoutes);

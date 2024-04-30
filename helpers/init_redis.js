@@ -25,4 +25,6 @@ process.on('SIGINT', () => {
   client.quit()
 })
 
+client.connect()
+
 module.exports = client
